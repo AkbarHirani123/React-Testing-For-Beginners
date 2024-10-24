@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Overdrive from 'react-overdrive';
-import { Poster } from './Movie';
+import Movie, { Poster } from './Movie';
 
 const POSTER_PATH = 'http://image.tmdb.org/t/p/w154';
 const BACKDROP_PATH = 'http://image.tmdb.org/t/p/w1280';
@@ -14,7 +14,7 @@ class MovieDetail extends Component {
 
   async componentDidMount() {
     try {
-      const res = await fetch(`https://api.themoviedb.org/3/movie/${this.props.match.params.id}?api_key=hi&language=en-US`);
+      const res = await fetch(`https://api.themoviedb.org/3/movie/${this.props.match.params.id}?api_key=53504678aeb73cc3b09392093237ae7c&language=en-US`);
       const movie = await res.json();
       this.setState({
         movie,
@@ -27,6 +27,8 @@ class MovieDetail extends Component {
   render() {
     const { movie } = this.state;
 
+    if(!movie.id) return null;
+
     return (
       <MovieWrapper backdrop={`${BACKDROP_PATH}${movie.backdrop_path}`}>
         <MovieInfo>
@@ -34,7 +36,7 @@ class MovieDetail extends Component {
             <Poster src={`${POSTER_PATH}${movie.poster_path}`} alt={movie.title} />
           </Overdrive>
           <div>
-            <h1>{movie.title}</h1>
+            <h1 data-testid="movie-title">{movie.title}</h1>
             <h3>{movie.release_date}</h3>
             <p>{movie.overview}</p>
           </div>
